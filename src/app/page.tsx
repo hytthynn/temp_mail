@@ -6,7 +6,7 @@ import { MailboxManager } from "@/components/MailboxManager";
 import { InboxList } from "@/components/InboxList";
 import { EmailViewer } from "@/components/EmailViewer";
 import { Email } from "@/lib/db";
-import { Mail, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 
 // SWR fetcher
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -50,9 +50,6 @@ export default function Home() {
     <main className="container">
       <header className="header glass-panel">
         <div className="logo-area">
-          <div className="logo-icon">
-            <Mail size={24} color="var(--accent-cyan)" />
-          </div>
           <h1>Hytthynn<span className="gradient-text">Mail</span></h1>
         </div>
         <div className="header-badges">
