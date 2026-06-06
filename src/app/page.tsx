@@ -1,66 +1,90 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { useState, useEffect } from "react";
+import useSWR from "swr";
+import { MailboxManager } from "@/components/MailboxManager";
+import { InboxList } from "@/components/InboxList";
+import { EmailViewer } from "@/components/EmailViewer";
+import { Email } from "@/lib/db";
+import { Mail, Shield, Zap } from "lucide-react";
+
+// SWR fetcher
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
+  const [activeAddress, setActiveAddress] = useState<string>("");
+  const [selectedEmailId, setSelectedEmailId] = useState<string | null>(null);
+
+  // Initialize random email on first load
+  useEffect(() => {
+    const randomString = Math.random().toString(36).substring(2, 10);
+    setActiveAddress(`${randomString}@hexsad.ru`);
+  }, []);
+
+  // Poll for new emails every 3 seconds
+  const { data, error, isLoading, mutate } = useSWR<{ emails: Email[] }>(
+    activeAddress ? `/api/emails?address=${activeAddress}` : null,
+    fetcher,
+    { refreshInterval: 3000 }
+  );
+
+  const emails = data?.emails || [];
+  const selectedEmail = emails.find((e) => e.id === selectedEmailId) || null;
+
+  const handleSendTest = async () => {
+    if (!activeAddress) return;
+    try {
+      await fetch("/api/send-test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address: activeAddress }),
+      });
+      mutate(); // manually trigger an immediate re-fetch
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="container">
+      <header className="header glass-panel">
+        <div className="logo-area">
+          <div className="logo-icon">
+            <Mail size={24} color="var(--accent-cyan)" />
+          </div>
+          <h1>Aura<span className="gradient-text">Mail</span></h1>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+        <div className="header-badges">
+          <div className="badge"><Shield size={14} /> Без спама</div>
+          <div className="badge"><Zap size={14} /> Мгновенно</div>
+        </div>
+      </header>
+
+      <div className="layout-grid">
+        <aside className="sidebar">
+          <MailboxManager 
+            activeAddress={activeAddress} 
+            onChangeAddress={setActiveAddress}
+            onSendTest={handleSendTest}
+          />
+        </aside>
+
+        <section className="inbox-section glass-panel">
+          {selectedEmail ? (
+            <EmailViewer 
+              email={selectedEmail} 
+              onBack={() => setSelectedEmailId(null)} 
             />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+          ) : (
+            <InboxList 
+              emails={emails} 
+              isLoading={isLoading} 
+              onSelect={setSelectedEmailId} 
+              activeAddress={activeAddress}
+            />
+          )}
+        </section>
+      </div>
+    </main>
   );
 }

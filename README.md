@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AuraMail 💌
 
-## Getting Started
+AuraMail — это быстрый, красивый и безопасный сервис временной почты. Защитите свой основной ящик от спама, создавая временные адреса электронной почты в один клик.
 
-First, run the development server:
+## 🌟 Особенности
+- **Glassmorphism Дизайн**: Премиальный, современный и отзывчивый темный интерфейс.
+- **Поддержка нескольких ящиков**: Управляйте сразу несколькими временными адресами.
+- **Мгновенное получение**: Письма появляются на экране без перезагрузки страницы (благодаря SWR).
+- **Vercel KV / Upstash**: Готово к деплою на бессерверную архитектуру Vercel с надежным хранением писем в Redis.
+- **Inbound Webhooks**: Легко интегрируется с сервисами вроде SendGrid или Cloudflare Email Workers для приема реальных писем на свой домен.
+
+## 🚀 Локальный запуск
+
+Склонируйте репозиторий и установите зависимости:
+
+```bash
+npm install
+```
+
+Запустите сервер разработки:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Откройте [http://localhost:3000](http://localhost:3000) в вашем браузере. Вы можете использовать встроенную кнопку "Тест" для проверки работы интерфейса и мок-базы данных.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🌍 Деплой в продакшен
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Создайте проект на [Vercel](https://vercel.com/).
+2. Добавьте интеграцию **Upstash Redis** в настройках Storage вашего проекта.
+3. Настройте прием вебхуков (POST-запросов) на маршрут `/api/webhook` с помощью SendGrid или аналогичного провайдера.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠 Стек технологий
+- **Фреймворк**: [Next.js](https://nextjs.org/) (App Router)
+- **Стилизация**: Vanilla CSS + CSS Variables
+- **Иконки**: [Lucide React](https://lucide.dev/)
+- **База данных**: [@upstash/redis](https://upstash.com/)
