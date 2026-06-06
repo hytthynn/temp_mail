@@ -1,7 +1,7 @@
 "use client";
 
 import { Email } from "@/lib/db";
-import { ArrowLeft, User, Calendar, Type, Code } from "lucide-react";
+import { ArrowLeft, User, Calendar, Type, Code, Paperclip } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
@@ -53,6 +53,33 @@ export function EmailViewer({ email, onBack }: Props) {
           </div>
         </div>
       </div>
+
+      {email.attachments && email.attachments.length > 0 && (
+        <div className="attachments-list">
+          <div className="attachments-header">
+            <Paperclip size={14} /> Вложения ({email.attachments.length})
+          </div>
+          <div className="attachments-grid">
+            {email.attachments.map((att, i) => (
+              <a 
+                key={i} 
+                href={att.content} 
+                download={att.filename}
+                className="attachment-item"
+              >
+                {att.contentType.startsWith('image/') ? (
+                  <img src={att.content} alt={att.filename} className="attachment-thumb" />
+                ) : (
+                  <div className="attachment-icon">
+                    <Paperclip size={20} />
+                  </div>
+                )}
+                <span className="attachment-name">{att.filename}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="email-body-container">
         {viewMode === 'html' && email.html ? (
