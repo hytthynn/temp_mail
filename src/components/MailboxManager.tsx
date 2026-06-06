@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, RefreshCw, Plus } from "lucide-react";
+import { Copy, RefreshCw, Plus, AlertTriangle } from "lucide-react";
 
 interface Props {
   activeAddress: string;
@@ -70,6 +70,11 @@ export function MailboxManager({ activeAddress, onChangeAddress }: Props) {
             <Plus size={18} />
           </button>
         </div>
+      </div>
+
+      <div className="unsupported-notice">
+        <AlertTriangle size={14} />
+        <span>Вложения не поддерживаются</span>
       </div>
     </div>
   );

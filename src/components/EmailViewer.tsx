@@ -1,7 +1,7 @@
 "use client";
 
 import { Email } from "@/lib/db";
-import { ArrowLeft, User, Calendar, Type, Code, Paperclip, Download } from "lucide-react";
+import { ArrowLeft, User, Calendar, Type, Code } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
@@ -17,8 +17,6 @@ export function EmailViewer({ email, onBack }: Props) {
     day: 'numeric', month: 'long', year: 'numeric', 
     hour: '2-digit', minute: '2-digit' 
   });
-
-  const hasImages = email.attachments && email.attachments.length > 0;
 
   return (
     <div className="email-viewer">
@@ -72,32 +70,6 @@ export function EmailViewer({ email, onBack }: Props) {
           </div>
         )}
       </div>
-
-      {hasImages && (
-        <div className="attachments-section">
-          <div className="attachments-header">
-            <Paperclip size={14} /> Вложения ({email.attachments!.length})
-          </div>
-          <div className="attachments-grid">
-            {email.attachments!.map((att, i) => (
-              <a 
-                key={i} 
-                href={att.content} 
-                download={att.filename}
-                className="attachment-item"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={att.content} alt={att.filename} className="attachment-thumb" />
-                <div className="attachment-info">
-                  <span className="attachment-name">{att.filename}</span>
-                  <Download size={12} />
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

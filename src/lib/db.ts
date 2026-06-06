@@ -1,11 +1,5 @@
 import { Redis } from '@upstash/redis';
 
-export interface EmailAttachment {
-  filename: string;
-  contentType: string;
-  content: string; // base64 data URL
-}
-
 export interface Email {
   id: string;
   to: string;
@@ -14,7 +8,6 @@ export interface Email {
   text: string;
   html?: string;
   date: string;
-  attachments?: EmailAttachment[];
 }
 
 // Initialize Redis if environment variables are present
