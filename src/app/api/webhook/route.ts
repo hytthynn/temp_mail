@@ -25,9 +25,17 @@ export async function POST(request: Request) {
 
     const cleanTo = to.trim().toLowerCase();
 
-    // Process attachments
+    // Collect CIDs referenced in HTML
+    const cids = new Set<string>();
+    const cidMatches = html.matchAll(/cid:([^"'\s>]+)/gi);
+    for (const m of cidMatches) {
+      cids.add(m[1].toLowerCase());
+    }
+
     const attachments: EmailAttachment[] = [];
     let processedHtml = html;
+    let totalSize = 0;
+    const MAX_BASE64_SIZE = 3_000_000; // ~3MB limit for all attachments combined
 
     for (let i = 1; i <= 20; i++) {
       const file = formData.get(`attachment-${i}`);
@@ -45,20 +53,25 @@ export async function POST(request: Request) {
         } catch {}
       }
 
-      // Convert to base64 data URL
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const base64 = buffer.toString('base64');
-      const dataUrl = `data:${contentType};base64,${base64}`;
-
-      attachments.push({ filename, contentType, content: dataUrl });
-
-      // Replace CID references in HTML with data URLs
+      // Check if this attachment is referenced in HTML (inline image)
       const cidMatch = filename.match(/<(.+?)>/);
-      const cid = cidMatch ? cidMatch[1] : filename;
-      processedHtml = processedHtml.replace(
-        new RegExp(`cid:${cid}`, 'gi'),
-        dataUrl
-      );
+      const cid = cidMatch ? cidMatch[1] : null;
+      const isInline = cid && cids.has(cid.toLowerCase());
+
+      if (isInline) {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const base64 = buffer.toString('base64');
+        totalSize += base64.length;
+
+        if (totalSize > MAX_BASE64_SIZE) break;
+
+        const dataUrl = `data:${contentType};base64,${base64}`;
+        attachments.push({ filename, contentType, content: dataUrl });
+        processedHtml = processedHtml.replace(
+          new RegExp(`cid:${cid}`, 'gi'),
+          dataUrl
+        );
+      }
     }
 
     const newEmail: Email = {
