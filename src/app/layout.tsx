@@ -9,8 +9,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "AuraMail | Сервис временной почты",
-  description: "Безопасная, быстрая и красивая временная почта без регистрации. Защитите свой основной ящик от спама.",
+  title: "HytthynnMail | Сервис временной почты",
+  description: "Быстрая и красивая временная почта без регистрации.",
 };
 
 export default function RootLayout({

@@ -6,20 +6,35 @@ import { MailboxManager } from "@/components/MailboxManager";
 import { InboxList } from "@/components/InboxList";
 import { EmailViewer } from "@/components/EmailViewer";
 import { Email } from "@/lib/db";
-import { Mail, Shield, Zap } from "lucide-react";
+import { Mail, Zap } from "lucide-react";
 
 // SWR fetcher
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+const STORAGE_KEY = "hytthynnmail-address";
 
 export default function Home() {
   const [activeAddress, setActiveAddress] = useState<string>("");
   const [selectedEmailId, setSelectedEmailId] = useState<string | null>(null);
 
-  // Initialize random email on first load
+  // Load address from localStorage or generate random on first visit
   useEffect(() => {
-    const randomString = Math.random().toString(36).substring(2, 10);
-    setActiveAddress(`${randomString}@hexsad.ru`);
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      setActiveAddress(saved);
+    } else {
+      const randomString = Math.random().toString(36).substring(2, 10);
+      const addr = `${randomString}@hexsad.ru`;
+      localStorage.setItem(STORAGE_KEY, addr);
+      setActiveAddress(addr);
+    }
   }, []);
+
+  const handleChangeAddress = (addr: string) => {
+    localStorage.setItem(STORAGE_KEY, addr);
+    setActiveAddress(addr);
+    setSelectedEmailId(null);
+  };
 
   // Poll for new emails every 3 seconds
   const { data, error, isLoading, mutate } = useSWR<{ emails: Email[] }>(
@@ -31,20 +46,6 @@ export default function Home() {
   const emails = data?.emails || [];
   const selectedEmail = emails.find((e) => e.id === selectedEmailId) || null;
 
-  const handleSendTest = async () => {
-    if (!activeAddress) return;
-    try {
-      await fetch("/api/send-test", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: activeAddress }),
-      });
-      mutate(); // manually trigger an immediate re-fetch
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <main className="container">
       <header className="header glass-panel">
@@ -52,10 +53,9 @@ export default function Home() {
           <div className="logo-icon">
             <Mail size={24} color="var(--accent-cyan)" />
           </div>
-          <h1>Aura<span className="gradient-text">Mail</span></h1>
+          <h1>Hytthynn<span className="gradient-text">Mail</span></h1>
         </div>
         <div className="header-badges">
-          <div className="badge"><Shield size={14} /> Без спама</div>
           <div className="badge"><Zap size={14} /> Мгновенно</div>
         </div>
       </header>
@@ -64,8 +64,7 @@ export default function Home() {
         <aside className="sidebar">
           <MailboxManager 
             activeAddress={activeAddress} 
-            onChangeAddress={setActiveAddress}
-            onSendTest={handleSendTest}
+            onChangeAddress={handleChangeAddress}
           />
         </aside>
 

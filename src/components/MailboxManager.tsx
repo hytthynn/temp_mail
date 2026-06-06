@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, RefreshCw, Plus, Send } from "lucide-react";
+import { Copy, RefreshCw, Plus } from "lucide-react";
 
 interface Props {
   activeAddress: string;
   onChangeAddress: (addr: string) => void;
-  onSendTest: () => void;
 }
 
-export function MailboxManager({ activeAddress, onChangeAddress, onSendTest }: Props) {
+export function MailboxManager({ activeAddress, onChangeAddress }: Props) {
   const [copied, setCopied] = useState(false);
   const [customPrefix, setCustomPrefix] = useState("");
 
@@ -26,7 +25,6 @@ export function MailboxManager({ activeAddress, onChangeAddress, onSendTest }: P
 
   const handleCreateCustom = () => {
     if (customPrefix.trim()) {
-      // Remove any @ signs or spaces
       const clean = customPrefix.replace(/[^a-zA-Z0-9-]/g, "").toLowerCase();
       if (clean) {
         onChangeAddress(`${clean}@hexsad.ru`);
@@ -54,9 +52,6 @@ export function MailboxManager({ activeAddress, onChangeAddress, onSendTest }: P
       <div className="actions-grid">
         <button className="btn-secondary" onClick={handleGenerateRandom}>
           <RefreshCw size={16} /> Случайный
-        </button>
-        <button className="btn-primary" onClick={onSendTest}>
-          <Send size={16} /> Тест
         </button>
       </div>
 
