@@ -11,9 +11,9 @@ export interface Email {
 }
 
 // Initialize Redis if environment variables are present
-// Supports both the new Upstash integration and the legacy Vercel KV integration
-const redisUrl = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
-const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+// Supports the new Upstash integration, legacy Vercel KV, and specific Vercel marketplace prefixes
+const redisUrl = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_KV_REST_API_URL;
+const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN;
 
 const redis = redisUrl && redisToken 
   ? new Redis({ url: redisUrl, token: redisToken }) 
