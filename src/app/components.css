@@ -482,3 +482,257 @@ button {
     min-height: 600px;
   }
 }
+
+/* Tablet */
+@media (max-width: 768px) {
+  .container {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.3rem;
+  }
+
+  .header-badges {
+    gap: 0.5rem;
+  }
+
+  .badge {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .layout-grid {
+    gap: 1rem;
+  }
+
+  .mailbox-manager {
+    padding: 1rem;
+    gap: 1rem;
+    height: auto;
+  }
+
+  .address-input {
+    font-size: 0.95rem;
+  }
+
+  .email-item {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .email-item-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .email-item:hover {
+    transform: none;
+  }
+
+  .inbox-header {
+    padding: 1rem;
+  }
+
+  .inbox-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .emails-container {
+    padding: 0.75rem;
+  }
+
+  .viewer-header {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .email-meta {
+    padding: 1rem;
+  }
+
+  .email-title {
+    font-size: 1.2rem;
+  }
+
+  .text-content-wrapper {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .empty-state {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .scanner-animation {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+    gap: 0.75rem;
+  }
+
+  .header {
+    padding: 0.75rem;
+    border-radius: 12px;
+  }
+
+  .logo-area h1 {
+    font-size: 1.1rem;
+  }
+
+  .badge {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    border-radius: 16px;
+  }
+
+  .layout-grid {
+    gap: 0.75rem;
+  }
+
+  .mailbox-manager {
+    padding: 0.75rem;
+    gap: 0.75rem;
+    border-radius: 12px;
+  }
+
+  .mailbox-manager h3 {
+    font-size: 0.95rem;
+  }
+
+  .active-address-box {
+    padding: 0.35rem;
+    border-radius: 8px;
+  }
+
+  .address-input {
+    font-size: 0.85rem;
+    padding: 0.35rem;
+  }
+
+  .icon-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .btn-secondary {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .custom-input-group {
+    border-radius: 6px;
+  }
+
+  .custom-input-group input {
+    font-size: 0.85rem;
+    padding: 0.4rem;
+  }
+
+  .domain-suffix {
+    font-size: 0.8rem;
+  }
+
+  .unsupported-notice {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .inbox-section {
+    border-radius: 12px;
+    min-height: 500px;
+  }
+
+  .email-item {
+    padding: 0.6rem;
+    gap: 0.6rem;
+    border-radius: 8px;
+  }
+
+  .email-item-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .email-item-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .email-sender {
+    font-size: 0.85rem;
+  }
+
+  .email-time {
+    font-size: 0.7rem;
+  }
+
+  .email-subject {
+    font-size: 0.85rem;
+  }
+
+  .email-preview {
+    font-size: 0.8rem;
+  }
+
+  .viewer-header {
+    padding: 0.75rem;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .btn-icon-text {
+    font-size: 0.85rem;
+    padding: 0.4rem;
+  }
+
+  .toggle-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .email-meta {
+    padding: 0.75rem;
+  }
+
+  .email-title {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .meta-item {
+    font-size: 0.8rem;
+  }
+
+  .email-body-container {
+    border-radius: 0 0 12px 12px;
+  }
+
+  .text-content-wrapper {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1rem;
+  }
+
+  .empty-state p {
+    font-size: 0.85rem;
+  }
+}
