@@ -11,8 +11,13 @@ export interface Email {
 }
 
 // Initialize Redis if environment variables are present
-const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
-const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+// Supports both Upstash new naming and legacy Vercel KV naming
+const redisUrl = process.env.UPSTASH_REDIS_REST_KV_REST_API_URL
+  || process.env.UPSTASH_REDIS_REST_URL
+  || process.env.KV_REST_API_URL;
+const redisToken = process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN
+  || process.env.UPSTASH_REDIS_REST_TOKEN
+  || process.env.KV_REST_API_TOKEN;
 
 const redis = redisUrl && redisToken 
   ? new Redis({ url: redisUrl, token: redisToken }) 
